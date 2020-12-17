@@ -1,5 +1,7 @@
+import java.util.Arrays;
+
 public class Main {
-    private final int [] input = {
+    private final static int [] input = {
         1509, 1857, 1736, 1815, 1576, 1970, 1567, 1778, 1508, 1833, 1377, 1890,
         1375, 1396, 1102, 1639, 1818, 1469, 1138, 1333, 1906, 1557, 1686, 1712,
         1990, 1930, 1761, 1881, 1551, 1627, 1801, 1728, 1960, 1407, 1832, 1842,
@@ -20,6 +22,57 @@ public class Main {
     };
 
     public static void main(String [] args) {
+        Arrays.sort(input);
 
+        int [] answer = partA(2020);
+
+        if (answer != null) {
+            System.out.printf("The values that add up to 2020 are %s%n",
+                    arrayToString(answer));
+
+            System.out.printf("Thier product is %d%n", multiplyArray(answer));
+        } else {
+            System.out.printf("There are no values that add up to 2020%n");
+        }
+
+    }
+
+    static int [] partA(int key) {
+        int index1 = 0;
+        int index2 = input.length - 1;
+
+        while (index1 != index2) {
+            int sum = input [index1] + input [index2];
+            if (sum == key) {
+                return new int [] { input [index1], input [index2] };
+            }
+
+            if (sum > key) {
+                index2--;
+            } else {
+                index1++;
+            }
+        }
+
+        return null;
+    }
+
+    static int multiplyArray(int [] array) {
+        int product = 1;
+        for (int i = 0; i < array.length; i++) {
+            product = product * array [i];
+        }
+
+        return product;
+    }
+
+    static String arrayToString(int [] array) {
+        StringBuilder string = new StringBuilder();
+        for (int i = 0; i < array.length - 1; i++) {
+            string.append(String.format("%d, ", array [i]));
+        }
+        string.append(String.format("and %d", array [array.length - 1]));
+
+        return string.toString();
     }
 }
