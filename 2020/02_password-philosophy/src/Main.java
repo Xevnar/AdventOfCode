@@ -13,13 +13,12 @@ public class Main {
     public static void main(String [] args) {
         parseFile();
         partA();
-        //for (int i = 0; i < passwords.length; i++) {
-        //    System.out.printf("%s%n", passwords [i]);
-        //}
+        partB();
     }
 
     static void partA() {
         int validPasswords = 0;
+
         for (int i = 0; i < passwords.length; i++) {
 
             int count = 0;
@@ -44,7 +43,27 @@ public class Main {
             validPasswords++;
         }
 
-        System.out.printf("The amount of valid passwords is %d%n", validPasswords);
+        System.out.printf("The amount of valid passwords is %d%n",
+                validPasswords);
+    }
+
+    static void partB() {
+        int validPasswords = 0;
+
+        for (int i = 0; i < passwords.length; i++) {
+            boolean firstPositionFilled = passwords [i].charAt(
+                    appearances [i][0] - 1) == characters [i].charAt(0);
+
+            boolean secondPositionFilled = passwords [i].charAt(
+                    appearances [i][1] - 1) == characters [i].charAt(0);
+
+            if (firstPositionFilled ^ secondPositionFilled) {
+                validPasswords++;
+            }
+        }
+
+        System.out.printf("The amount of valid passwords is %d%n",
+                validPasswords);
     }
 
     static void parseFile() {
