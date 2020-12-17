@@ -21,27 +21,32 @@ public class Main {
         1820, 1531, 1577, 1710, 1382, 1246, 1864, 1702
     };
 
+
     public static void main(String [] args) {
+        final int key = 2020;
+
         Arrays.sort(input);
 
-        int [] answer = partA(2020);
+        int [] answer = partA(key);
+        printOutput(key, answer);
 
-        if (answer != null) {
-            System.out.printf("The values that add up to 2020 are %s%n",
-                    arrayToString(answer));
-
-            System.out.printf("Thier product is %d%n", multiplyArray(answer));
-        } else {
-            System.out.printf("There are no values that add up to 2020%n");
-        }
-
+        answer = partB(key);
+        printOutput(key, answer);
     }
 
     static int [] partA(int key) {
-        int index1 = 0;
+        return partA(key, 0);
+    }
+
+    /*
+     * pinched this algorithm from
+     * www.geeksforgeeks.org/given-an-array-a-and-a-number-x-check-for-pair-in-a-with-sum-as-x/
+     */
+    static int [] partA(int key, int startIndex) {
+        int index1 = startIndex;
         int index2 = input.length - 1;
 
-        while (index1 != index2) {
+        while (index1 < index2) {
             int sum = input [index1] + input [index2];
             if (sum == key) {
                 return new int [] { input [index1], input [index2] };
@@ -51,6 +56,18 @@ public class Main {
                 index2--;
             } else {
                 index1++;
+            }
+        }
+
+        return null;
+    }
+
+    static int [] partB(int key) {
+        for (int i = 0; i < input.length; i++) {
+            int [] answer = partA(key - input [i], i + 1);
+
+            if (answer != null) {
+                return new int [] { input [i], answer [0], answer [1] };
             }
         }
 
@@ -74,5 +91,16 @@ public class Main {
         string.append(String.format("and %d", array [array.length - 1]));
 
         return string.toString();
+    }
+
+    static void printOutput(int key, int [] array) {
+        if (array != null) {
+            System.out.printf("The values that add up to %d are %s%n",
+                    key, arrayToString(array));
+
+            System.out.printf("Thier product is %d%n", multiplyArray(array));
+        } else {
+            System.out.printf("There are no values that add up to %d%n", key);
+        }
     }
 }
