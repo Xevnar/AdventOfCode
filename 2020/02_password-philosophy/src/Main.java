@@ -12,9 +12,39 @@ public class Main {
 
     public static void main(String [] args) {
         parseFile();
+        partA();
+        //for (int i = 0; i < passwords.length; i++) {
+        //    System.out.printf("%s%n", passwords [i]);
+        //}
+    }
+
+    static void partA() {
+        int validPasswords = 0;
         for (int i = 0; i < passwords.length; i++) {
-            System.out.printf("%s%n", passwords [i]);
+
+            int count = 0;
+            int characterIndex = -1;
+            do {
+                characterIndex = passwords[i].indexOf(characters [i],
+                        characterIndex + 1);
+
+                if (characterIndex != -1) {
+                    count++;
+                }
+            } while (characterIndex != -1);
+
+            if (count < appearances [i][0]) {
+                continue;
+            }
+
+            if (count > appearances [i][1]) {
+                continue;
+            }
+
+            validPasswords++;
         }
+
+        System.out.printf("The amount of valid passwords is %d%n", validPasswords);
     }
 
     static void parseFile() {
