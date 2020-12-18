@@ -11,25 +11,47 @@ public class Main {
     public static void main(String [] args) {
         parseFile();
         partA();
+        partB();
     }
 
     static void partA() {
-        int treeCount = 0;
-
-        for (int verticalIndex = 0, horizontalIndex = 0;
-                verticalIndex < grid.length;) {
-
-            if (grid [verticalIndex].charAt(horizontalIndex) == '#') {
-                treeCount++;
-            }
-
-            // Increment the indices
-            horizontalIndex = (horizontalIndex + 3)
-                % grid [verticalIndex++].length();
-        }
+        int [] trees = countCollisions(new int [] [] { { 3, 1 } });
 
         System.out.printf("The amount of trees that will be hit is %d%n",
-                treeCount);
+                trees [0]);
+    }
+
+    static void partB() {
+        int [] trees = countCollisions(new int [] [] { { 1, 1 }, { 3, 1 },
+            { 5, 1 }, { 7, 1 }, { 1 , 2 } });
+
+        int product = 1;
+        for (int i = 0; i < trees.length; i++) {
+            product *= trees [i];
+        }
+
+        System.out.printf("The product of all trees hit in each slope is %s%n",
+                product);
+    }
+
+    static int [] countCollisions(int [][] steps) {
+        int [] treeCounts = new int [steps.length];
+        for (int i = 0; i < steps.length; i++) {
+            for (int verticalIndex = 0, horizontalIndex = 0;
+                    verticalIndex < grid.length;) {
+
+                if (grid [verticalIndex].charAt(horizontalIndex) == '#') {
+                    treeCounts [i]++;
+                }
+
+                // Increment the indices
+                horizontalIndex = (horizontalIndex + steps [i] [0])
+                    % grid [verticalIndex].length();
+
+                verticalIndex += steps [i] [1];
+            }
+        }
+        return treeCounts;
     }
 
     static void parseFile() {
