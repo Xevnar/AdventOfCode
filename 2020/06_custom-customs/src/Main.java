@@ -13,6 +13,7 @@ public class Main {
     public static void main(String [] args) {
         parseFile();
         partA();
+        partB();
     }
 
     static void partA() {
@@ -20,13 +21,8 @@ public class Main {
         for (int i = 0; i < groupAnswers.length; i++) {
             String answers = groupAnswers [i].replaceAll("(\\h|\\v)+", "");
 
-            char[] chars = answers.toCharArray();
             Set<Character> uniqueChars = new HashSet<>();
-
-            for (int j = 0; j < chars.length; j++) {
-               uniqueChars.add(chars [j]);
-
-            }
+            storeCharsInSet(answers, uniqueChars);
 
             totalAnswers += uniqueChars.size();
         }
@@ -35,9 +31,40 @@ public class Main {
                 totalAnswers);
     }
 
+    static void partB() {
+        int totalAnswers = 0;
+        for (int i = 0; i < groupAnswers.length; i++) {
+            String [] individualAnswers = groupAnswers [i].split("\\v+");
+
+            // Have the first person's answers act as a base
+            Set<Character> baseChars = new HashSet<>();
+            storeCharsInSet(individualAnswers [0], baseChars);
+
+            for (int j = 1; j < individualAnswers.length; j++) {
+                Set<Character> tempChars = new HashSet<>();
+                storeCharsInSet(individualAnswers [j], tempChars);
+
+                // Keep set intersection
+                baseChars.retainAll(tempChars);
+            }
+
+            totalAnswers += baseChars.size();
+        }
+
+        System.out.printf("The total number of answers for all groups is %d%n",
+                totalAnswers);
+    }
+
+    static void storeCharsInSet(String array, Set<Character> s) {
+        char [] chars = array.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            s.add(chars [i]);
+        }
+    }
+
     static void parseFile() {
         try (Scanner input = new Scanner(file)) {
-            ArrayList <String> groupAnswers = new ArrayList<>();
+            ArrayList<String> groupAnswers = new ArrayList<>();
             input.useDelimiter("\n\n");
             while (input.hasNext()) {
                 groupAnswers.add(input.next());
