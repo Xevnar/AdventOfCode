@@ -22,7 +22,7 @@ public class Main {
         splitRules(containers, contents);
 
         int count = getContainerCount("shiny gold", containers, contents);
-        System.out.printf("The amount of bags that can carry a shiny gold bag is %d%n",
+        System.out.printf("The count of bags that can carry a shiny gold bag is %d%n",
                 count);
     }
 
@@ -49,6 +49,34 @@ public class Main {
     }
 
     static void partB() {
+        String [] containers = new String [rules.length];
+        String [] contents = new String [rules.length];
+        splitRules(containers, contents);
+
+        int count = getContentCount("shiny gold", containers, contents);
+        System.out.printf("The count of bags carried by a shiny gold bag is %d%n",
+                count);
+    }
+
+    static int getContentCount(String key, String [] containers, String [] contents) {
+        // Assuming that each bag color has exactly 1 rule
+        int index = searchStringArray(containers, key) [0];
+        // Base Case: bag can't hold any other bags
+        if (contents [index].equals("no other bags.")) {
+            return 0;
+        }
+
+        String [] bags = contents [index].split(" bag[s,.]{1,2}\\s?");
+
+        // The formula for the max nested bag count is:
+        // (nestedBagCount * containerBagCount) + containerBagCount
+        int contentCount = 0;
+        for (int i = 0; i < bags.length; i++) {
+            int bagCount = Integer.parseInt(bags [i].substring(0,1));
+            bagCount += getContentCount(bags [i].substring(2), containers, contents) * bagCount;
+            contentCount += bagCount;
+        }
+        return contentCount;
     }
 
     static void splitRules(String [] containers, String [] contents) {
