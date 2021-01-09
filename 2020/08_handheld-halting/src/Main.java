@@ -17,6 +17,30 @@ public class Main {
     }
 
     static void partA() {
+        int accumulator = 0;
+        for (int i = 0; i < bootCode.length;) {
+            if (bootCode [i].equals("")) {
+                break;
+            }
+
+            switch (bootCode [i].substring(0, 3)) {
+                case "nop":
+                    bootCode [i++] = "";
+                    break;
+                case "acc":
+                    accumulator += Integer.parseInt(bootCode [i].substring(4));
+                    bootCode [i++] = "";
+                    break;
+                case "jmp":
+                    int newIndex = Integer.parseInt(bootCode [i].substring(4));
+                    bootCode [i] = "";
+                    i += newIndex;
+                    break;
+                default:
+                    break;
+            }
+        }
+        System.out.printf("Accumulator value before loop is %d%n", accumulator);
     }
 
     static void partB() {
