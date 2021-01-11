@@ -17,6 +17,37 @@ public class Main {
     }
 
     static void partA() {
+        System.out.printf("The invalid value in the list is %d%n",
+                getInvalidNum(25));
+    }
+
+    static long getInvalidNum(int preamble) {
+        for (int i = preamble; i < values.length; i++) {
+            boolean hasPair = false;
+            for (int j = i - preamble; j < i; j++) {
+                long complement = values [i] - values [j];
+
+                if (complement <= 0) {
+                    continue;
+                }
+
+                for (int k = i - preamble; k < i; k++) {
+                    if (k == j) {
+                        continue;
+                    }
+
+                    if (values [k] == complement) {
+                        hasPair = true;
+                    }
+                }
+            }
+
+            if (!hasPair) {
+                return values [i];
+            }
+        }
+
+        return -1;
     }
 
     static void partB() {
