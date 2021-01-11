@@ -51,6 +51,30 @@ public class Main {
     }
 
     static void partB() {
+        long [] set = getContiguousSet(getInvalidNum(25));
+        Arrays.sort(set);
+
+        System.out.printf("The encryption weakness is %d%n",
+                set [set.length - 1] + set [0]);
+    }
+
+    static long [] getContiguousSet(long key) {
+        int setStart = 0;
+        int setEnd = 0;
+        for (int i = 0, sum = 0; i < values.length; i++) {
+            sum += values [i];
+
+            while (sum > key) {
+                sum -= values [setStart++];
+            }
+
+            if (sum == key) {
+                setEnd = i;
+                break;
+            }
+        }
+
+        return Arrays.copyOfRange(values, setStart, setEnd);
     }
 
     static void parseFile() {
