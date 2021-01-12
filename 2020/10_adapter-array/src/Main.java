@@ -35,6 +35,43 @@ public class Main {
     }
 
     static void partB() {
+        int [] joltages = adapterJoltages.clone();
+        Arrays.sort(joltages);
+
+        // Insert a 0 to the start of the array to account for the wall outlet
+        int [] temp = new int [joltages.length + 1];
+        for (int i = 1; i < temp.length; i++) {
+            temp [i] = joltages [i - 1];
+        }
+        joltages = temp;
+
+        /*
+         * If we assume that the root (0) of the array starts with a possible
+         * path of '1' then:
+         *   The number unique paths to an adapter with joltage 'n' is
+         *   equal:
+         *      Pn = Pn-1 + Pn-2 + Pn-3, n > 0
+         *   and if the adapter with the joltage 'n-k' is not available then
+         *   the value of 'Pn-k' is '0'
+         */
+        long [] pathsToN = new long [joltages.length];
+        pathsToN [0] = 1;
+        for (int i = 1; i < joltages.length; i++) {
+            for (int j = i - 1; j > i - 4; j--) {
+                if (j < 0) {
+                    break;
+                }
+
+                if ((joltages [i] - joltages [j]) > 3) {
+                    continue;
+                }
+
+                pathsToN [i] += pathsToN [j];
+            }
+        }
+
+        System.out.printf("The unique arrangements of adapters is %d%n",
+                pathsToN [pathsToN.length - 1]);
     }
 
     static void parseFile() {
