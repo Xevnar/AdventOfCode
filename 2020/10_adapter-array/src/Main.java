@@ -17,6 +17,21 @@ public class Main {
     }
 
     static void partA() {
+        int [] joltages = adapterJoltages.clone();
+        Arrays.sort(joltages);
+
+        int oneDiffs = 0;
+        int threeDiffs = 1;
+        for (int i = 0; i < joltages.length; i++) {
+            int prevJoltage = i != 0 ? joltages [i - 1] : 0;
+            switch (joltages [i] -  prevJoltage) {
+                case 1: oneDiffs++; break;
+                case 3: threeDiffs++; break;
+            }
+        }
+
+        System.out.printf("The count of joltage differences is %d%n",
+                oneDiffs * threeDiffs);
     }
 
     static void partB() {
