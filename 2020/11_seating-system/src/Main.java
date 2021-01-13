@@ -1,32 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.Thread;
 import java.util.Scanner;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 public class Main {
     private static final File file = new File("input.txt");
 
     private static String [] seatLayout;
 
-    public static void main(String [] args) throws InterruptedException {
+    public static void main(String [] args) {
         parseFile();
         partA();
         partB();
     }
 
-    static void partA() throws InterruptedException {
+    static void partA() {
         String [] finalSeatLayout = changeSeatLayout(seatLayout.clone());
 
         System.out.printf("The number of occupied seats at the end is %d%n",
                 countOccupiedSeats(finalSeatLayout));
     }
 
-    static String [] changeSeatLayout(String [] seatLayout) throws InterruptedException {
+    static String [] changeSeatLayout(String [] seatLayout) {
         String [] modifiedLayout = seatLayout.clone();
         for (int i = 0; i < seatLayout.length; i++) {
             char [] newSeatStates = modifiedLayout [i].toCharArray();
